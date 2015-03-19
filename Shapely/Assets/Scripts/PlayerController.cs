@@ -9,6 +9,7 @@ public class PlayerController : MonoBehaviour {
 	private string jumpButton;
 	private bool itOrNot;
 	public bool canTag;
+	private int playerScore = 0;
 
 	private Transform tagLabel;
 
@@ -121,7 +122,10 @@ public class PlayerController : MonoBehaviour {
 		SetLabelActive();
 		SetPlayerSpeed(8.0f);
 
-		StartCoroutine(waitALittle(1.5f));
+		//start score counter
+		InvokeRepeating("CountScore", 1.0f, 1.0f);
+
+		StartCoroutine(WaitALittle(1.5f));
 	}
 
 	void OnCollisionStay2D(Collision2D coll) 
@@ -138,6 +142,9 @@ public class PlayerController : MonoBehaviour {
 				SetLabelInactive();
 				player.SetSpeed(5.0f);
 
+				//stop incrementing the score
+				CancelInvoke("CountScore");
+
 				//handle the tagged player
 				coll.gameObject.GetComponent<PlayerController>().SetIt();
 
@@ -145,8 +152,18 @@ public class PlayerController : MonoBehaviour {
 		}
 	}
 
+	void CountScore()
+	{
+		playerScore++;
+	}
+
+	public int GetPlayerScore()
+	{
+		return playerScore;
+	}
+	
 	//wait for stun to ware off
-	IEnumerator waitALittle(float waitTime) 
+	IEnumerator WaitALittle(float waitTime) 
 	{
 		yield return new WaitForSeconds(waitTime);
 		canTag = true;
