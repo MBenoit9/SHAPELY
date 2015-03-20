@@ -12,7 +12,6 @@ public class PlayerController : MonoBehaviour {
 	private int playerScore = 0;
 
 	private Transform tagLabel;
-	Animator animator;
 
 	void Awake()
 	{
@@ -23,14 +22,6 @@ public class PlayerController : MonoBehaviour {
 		SetLabelInactive();
 
 		SetPlayerControls();
-
-		//Get the animator component. If Animator is not attached then throw an error.
-		animator = GetComponent<Animator>();
-		
-		if(animator == null)
-		{
-			Debug.LogError("Animator for player not found.");
-		}
 	}
 
 	void Start () {
@@ -174,9 +165,7 @@ public class PlayerController : MonoBehaviour {
 	//wait for stun to ware off
 	IEnumerator WaitALittle(float waitTime) 
 	{
-		animator.SetBool("tagStun", true);
 		yield return new WaitForSeconds(waitTime);
-		animator.SetBool("tagStun", false);
 		canTag = true;
 	}
 }

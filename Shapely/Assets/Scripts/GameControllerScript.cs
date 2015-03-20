@@ -30,8 +30,6 @@ public class GameControllerScript : MonoBehaviour {
 
 		//randomly choose a player to start the game as it.
 		firstIt = Random.Range( 0, players.Length);
-		Debug.Log ("NOP: " + players.Length + " FirstIt: " + firstIt);
-		Debug.Log ("name = " + players[1].name);
 		players[firstIt].GetComponent<PlayerController>().SetIt();
 
 		//set timer
