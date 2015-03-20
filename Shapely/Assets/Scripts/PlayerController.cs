@@ -12,9 +12,15 @@ public class PlayerController : MonoBehaviour {
 	private int playerScore = 0;
 
 	private Transform tagLabel;
+	Animator animator;
 
 	void Awake()
 	{
+		animator = GetComponent<Animator>();
+		if(animator == null)
+		{
+			Debug.LogError("Error: The animator was not found for a player object.");
+		}
 		itOrNot = false;
 		canTag = true;
 		tagLabel = transform.Find("TagLabel");
@@ -125,6 +131,7 @@ public class PlayerController : MonoBehaviour {
 		//start score counter
 		InvokeRepeating("CountScore", 1.0f, 1.0f);
 
+		animator.SetBool("tagStunned", true);
 		StartCoroutine(WaitALittle(1.5f));
 	}
 
@@ -136,7 +143,6 @@ public class PlayerController : MonoBehaviour {
 			//If so, then swap tag status with tagee
 			if (itOrNot && !coll.gameObject.GetComponent<PlayerController>().GetItOrNot() && canTag)
 			{
-				Debug.Log ("Tag");
 				//handle tagging object
 				itOrNot = false;
 				SetLabelInactive();
@@ -167,5 +173,6 @@ public class PlayerController : MonoBehaviour {
 	{
 		yield return new WaitForSeconds(waitTime);
 		canTag = true;
+		animator.SetBool("tagStunned", false);
 	}
 }
