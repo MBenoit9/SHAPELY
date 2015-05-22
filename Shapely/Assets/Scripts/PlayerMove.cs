@@ -3,6 +3,7 @@ using System.Collections;
 
 public class PlayerMove : MonoBehaviour {
 	public float speed = 5.0f;
+    public float trueSpeed = 5.0f;
 	public float jumpSpeed = 10f;
 	float groundCheckRadius = 0.2f;
 	float ceilingCheckRadius = 0.02f;
@@ -130,6 +131,16 @@ public class PlayerMove : MonoBehaviour {
 	{
 		return speed;
 	}
+
+    public void SetTrueSpeed(float newTrueSpeed)
+    {
+        trueSpeed = newTrueSpeed;
+    }
+
+    public float GetTrueSpeed()
+    {
+        return trueSpeed;
+    }
 	
 	public void SetJumpSpeed(float newJS)
 	{

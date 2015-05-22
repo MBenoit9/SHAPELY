@@ -109,6 +109,11 @@ public class PlayerController : MonoBehaviour {
 	public void SetPlayerSpeed(float newSpeed)
 	{
 		player.SetSpeed(newSpeed);
+        //If speedup not due to powerup
+        if(newSpeed < 10)
+        {
+            player.SetTrueSpeed(newSpeed);
+        }
 	}
 
 	public void SetLabelActive()
@@ -132,7 +137,7 @@ public class PlayerController : MonoBehaviour {
 		InvokeRepeating("CountScore", 1.0f, 1.0f);
 
 		animator.SetBool("tagStunned", true);
-		StartCoroutine(WaitALittle(1.5f));
+		StartCoroutine(WaitForStun(1.5f));
 	}
 
 	void OnCollisionStay2D(Collision2D coll) 
@@ -146,7 +151,7 @@ public class PlayerController : MonoBehaviour {
 				//handle tagging object
 				itOrNot = false;
 				SetLabelInactive();
-				player.SetSpeed(5.0f);
+				SetPlayerSpeed(5.0f);
 
 				//stop incrementing the score
 				CancelInvoke("CountScore");
@@ -156,6 +161,22 @@ public class PlayerController : MonoBehaviour {
 
 			}
 		}
+        else if (coll.gameObject.tag == "PowerUp")
+        {
+            int powerType = coll.gameObject.GetComponent<PowerUpScript>().GetType();
+            switch(powerType)
+            {
+                //Speed PowerUp
+                case 1:
+                    StartCoroutine(WaitForSpeedUp());
+                    Destroy(coll.gameObject);
+                    break;
+
+                default:
+                    Debug.LogError("PowerUp type " + powerType + " is invalid.");
+                    break;
+            }
+        }
 	}
 
 	void CountScore()
@@ -169,10 +190,25 @@ public class PlayerController : MonoBehaviour {
 	}
 	
 	//wait for stun to ware off
-	IEnumerator WaitALittle(float waitTime) 
+	IEnumerator WaitForStun(float waitTime) 
 	{
 		yield return new WaitForSeconds(waitTime);
 		canTag = true;
 		animator.SetBool("tagStunned", false);
 	}
+
+    void DoubleSpeed()
+    {
+        SetPlayerSpeed(2.0f * player.GetTrueSpeed());
+    }
+
+    //Wait for powerup 1 effect to ware off
+    IEnumerator WaitForSpeedUp()
+    {
+        //double speed
+        InvokeRepeating("DoubleSpeed", 0.0f, 0.001f);
+        yield return new WaitForSeconds(4.0f);
+        CancelInvoke("DoubleSpeed");
+        SetPlayerSpeed(player.GetTrueSpeed());
+    }
 }
