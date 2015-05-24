@@ -26,7 +26,7 @@ public class PowerUpControllerScript : MonoBehaviour {
 			GameObject newPowerUp = Instantiate(Resources.Load("PowerUp"), spawnPoints[spawnChoice].transform.position, spawnPoints[spawnChoice].transform.rotation) as GameObject;
 			//int type = Random.Range (1,4);
 			int type = 1;
-			newPowerUp.GetComponent<PowerUpScript>().SetType(type);
+			newPowerUp.GetComponent<PowerUpScript>().SetPowerType(type);
 			newPowerUp.GetComponent<PowerUpScript>().SetSprite("Power"+type);
 
 			nextSpawnTime = currentTime += Random.Range(5.0f, 11.0f);

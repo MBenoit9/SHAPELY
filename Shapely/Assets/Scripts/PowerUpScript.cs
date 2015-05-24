@@ -5,12 +5,12 @@ public class PowerUpScript : MonoBehaviour {
 
 	private int type;
 
-	public void SetType(int newType)
+	public void SetPowerType(int newType)
 	{
 		type = newType;
 	}
 
-	public int GetType()
+	public int GetPowerType()
 	{
 		return type;
 	}

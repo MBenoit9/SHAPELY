@@ -163,7 +163,7 @@ public class PlayerController : MonoBehaviour {
 		}
         else if (coll.gameObject.tag == "PowerUp")
         {
-            int powerType = coll.gameObject.GetComponent<PowerUpScript>().GetType();
+            int powerType = coll.gameObject.GetComponent<PowerUpScript>().GetPowerType();
             switch(powerType)
             {
                 //Speed PowerUp
